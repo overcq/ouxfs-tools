@@ -34,7 +34,7 @@ main( int argc
     {   perror( argv[0] );
         return 1;
     }
-    char *sector = calloc( 1, sector_size );
+    char *sector = malloc( sector_size );
     if( !sector )
     {   perror( argv[0] );
         close(fd);
@@ -42,10 +42,7 @@ main( int argc
     }
     char *data = sector;
     strcpy( data, "OUXFS" );
-    data += 6;
-    *data = __builtin_ctz( sector_size );
-    data++;
-    data = H_oux_J_align_up_p( data, uint64_t );
+    data = H_oux_J_align_up_p( data + 5, uint64_t );
     uint64_t value = 0;
     memcpy(( void * )data, ( void * )&value, sizeof(value) ); // block_table_n
     data += sizeof(value);
